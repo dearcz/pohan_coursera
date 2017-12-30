@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Company Merger</title>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jq-2.2.0,dt-1.10.11/datatables.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+<style>
+    #ROFR_1,
+    #ROFR_2,
+    #result,
+    #again{
+        display: none;
+    }
+
+    .container {
+    }
+
+    .start1 {
+        width: 75%;
+        margin: 0 auto;
+    }
+
+    #result {
+        width: 300px;
+    }
+
+    #result1 {
+        width: 300px;
+    }
+
+</style>
+
+    
+</head>
+
+<body>
+    <div class="container" style="width:100%;padding-top:50px;text-align: center; font-size: 48px;">
+        公司併購詳細規則
+    </div>
+<!--    文字段落-->
+    <div class="container" style="width:75%;padding:50px;text-align: left; font-size: 20px;">
+        <p>在這個情境裡，我有一家公司正在尋找買家，而你是唯一的可能買家，亦即沒有人與你競爭。<br/><br/>另外，你有技術在手，只要買下公司，就能改善公司生產流程，使生產力增加，利潤也會因此增加50%。<br/><br/>假設我手裡利潤是50萬，在你手裡利潤就會變成75萬，依此類推。<br/><br/>但是，即使你確知能提升公司生產力50%，卻不知道公司目前生產力是多少。<br/><br/>然而，你知道這家公司在我手上只可能產生0~100萬的利潤，這個利潤是在0~100萬的區間中均勻分布的。
+        </p>
+        <br/>
+        <p>
+            你能出價的區間在0~150萬，0就代表不買。你出價後，我會根據公司的實際估值資訊決定賣或不賣。
+        </p>
+        <div style="text-align: center;">
+            <button class='btn btn-primary' id="start" style="margin: 50px;">閱讀完畢，準備開始</button>
+        </div>
+    </div>
+<!--閱讀完畢-->
+    <div class="row" style="margin-left: 15%; margin-right: 15%;">
+<!--    出價-->
+        <div id=ROFR_1 class="col-sm-7" style="align-content: center; line-height: 20px;font-size: 20px;margin-bottom: 500px;">
+            <p><label id="example-text-input">出價:</label></p>
+            <p><input class="form-control" style="width: 300px;height: 50px"type="number" placeholder="價格(0~150萬)" id="price" min="1" max="150"></p>
+            <div >
+            <p><button class='btn btn-primary' id='confirm'>確認</button>
+           <button class='btn btn-primary' id="again">再玩一次</button></p>
+            </div>
+        </div>
+        <div class="col-sm-1">
+        </div>
+<!--    右邊圖示-->
+        <div id=ROFR_2 class="col-sm-4" style="text-align: center; line-height: 20px;">
+            <h2>
+                圖示
+            </h2>
+            <div id="result1"></div>
+            <canvas id="myCanvas" width="300" height="400"></canvas>
+            <div id="result"></div>
+        </div>
+   </div>
+</body>
+
+<script>
+    //=======================================================
+
+    //=======================================================
+
+    var record = {};
+    var company_value = Math.floor(Math.random() * (101));
+    //var price = $("#price").val();
+    $("#again").click(function() {
+        $('#price').val('');
+        $("#ROFR_2").css("display", "none");
+        $("#again").css("display", "none");
+        $(':input').prop('disabled', false);
+        $("#confirm").prop('disabled', false);
+        $("#result").html("")
+        $("#result1").html("")
+        var canvas = $('#myCanvas')[0]; // or document.getElementById('canvas');
+        canvas.width = canvas.width;
+
+    });
+
+
+
+    $("#start").click(function() {
+        $("#ROFR_1").css("display", "inline-block");
+        $("html, body").animate({
+            scrollTop: $(document).height() - $(window).height()
+        });
+    });
+
+
+    $("#confirm").click(function() {
+
+        //calculate the profit
+        price = $("#price").val();
+
+        if (price < 0 || price > 150) {
+            alert("請輸入價格於0~150");
+        } else {
+            record['input_price'] = price;
+            record['company_value'] = company_value;
+            disable();
+
+            if (company_value >= price) {
+                $("#result").append("公司價值實際為 " + company_value + " 元，超過你出價，公司決定不賣。");
+                record['profit'] = 0;
+            } else {
+                var profit = company_value * 1.5 - price;
+                record['profit'] = profit;
+                if (profit >= 0) {
+                    $("#result").append("你買到了實際價值為 " + company_value + " 元的公司，賺了 " + profit + " 元。");
+                } else {
+                    profit = profit * (-1)
+                    var loss = Math.abs(profit);
+                    $("#result").append("你買到了實際價值為 " + company_value + " 元的公司，虧了 " + profit + " 元。");
+                }
+            }
+
+
+
+            $("#result").css("display", "inline-block");
+            $('#again').prop('disabled', false);
+            $("#again").css("display", "inline-block");
+
+            var ptn_with_y_axis = 0 - price
+            var ptn_highest_y = price * (0.5)
+            $("#ROFR_2").css("display", " inline-block");
+            $("#result1").append("Y軸交點 (0," + ptn_with_y_axis + "), peak (" + price + "," + ptn_highest_y + " )<br>(X軸為公司實際價值，Y軸為獲利)");
+
+            $("html, body").animate({
+                scrollTop: $(document).height() - $(window).height()
+            });
+            //====================drawXAxis========================
+            Graph.prototype.drawXAxis = function() {
+                var context = this.context;
+                context.save();
+                context.beginPath();
+                context.moveTo(0, this.centerY);
+                context.lineTo(this.canvas.width, this.centerY);
+                context.strokeStyle = this.axisColor;
+                context.lineWidth = 2;
+                context.stroke();
+
+                // draw tick marks
+                var xPosIncrement = this.unitsPerTick * this.unitX;
+                var xPos, unit;
+                context.font = this.font;
+                context.textAlign = 'center';
+                context.textBaseline = 'top';
+
+                // draw left tick marks
+                xPos = this.centerX - xPosIncrement;
+                unit = -1 * this.unitsPerTick;
+                while (xPos > 0) {
+                    context.moveTo(xPos, this.centerY - this.tickSize / 2);
+                    context.lineTo(xPos, this.centerY + this.tickSize / 2);
+                    context.stroke();
+                    context.fillText(unit, xPos, this.centerY + this.tickSize / 2 + 3);
+                    unit -= this.unitsPerTick;
+                    xPos = Math.round(xPos - xPosIncrement);
+                }
+
+                // draw right tick marks
+                xPos = this.centerX + xPosIncrement;
+                unit = this.unitsPerTick;
+                while (xPos < this.canvas.width) {
+                    context.moveTo(xPos, this.centerY - this.tickSize / 2);
+                    context.lineTo(xPos, this.centerY + this.tickSize / 2);
+                    context.stroke();
+                    context.fillText(unit, xPos, this.centerY + this.tickSize / 2 + 3);
+                    unit += this.unitsPerTick;
+                    xPos = Math.round(xPos + xPosIncrement);
+                }
+                context.restore();
+            };
+
+            //==========drawDot================
+            Graph.prototype.drawDot = function(equation, color, thickness) {
+                var context = this.context;
+                context.save();
+                context.save();
+                this.transformContext();
+
+                context.beginPath();
+                context.moveTo(company_value, equation(company_value));
+                //context.moveTo(company_value, equation(company_value));
+                for (var x = company_value; x <= company_value + 1; x += this.iteration) {
+                    context.lineTo(x, equation(x));
+                }
+                //=======================
+
+                context.restore();
+                context.lineJoin = 'round';
+                context.lineWidth = thickness;
+                context.strokeStyle = color;
+                context.stroke();
+                context.restore();
+            };
+            //================drawYAxis==========================
+            Graph.prototype.drawYAxis = function() {
+                var context = this.context;
+                context.save();
+                context.beginPath();
+                context.moveTo(this.centerX, 0);
+                context.lineTo(this.centerX, this.canvas.height);
+                context.strokeStyle = this.axisColor;
+                context.lineWidth = 2;
+                context.stroke();
+
+                // draw tick marks
+                var yPosIncrement = this.unitsPerTick * this.unitY;
+                var yPos, unit;
+                context.font = this.font;
+                context.textAlign = 'right';
+                context.textBaseline = 'middle';
+
+                // draw top tick marks
+                yPos = this.centerY - yPosIncrement;
+                unit = this.unitsPerTick;
+                while (yPos > 0) {
+                    context.moveTo(this.centerX - this.tickSize / 2, yPos);
+                    context.lineTo(this.centerX + this.tickSize / 2, yPos);
+                    context.stroke();
+                    context.fillText(unit, this.centerX - this.tickSize / 2 - 3, yPos);
+                    unit += this.unitsPerTick;
+                    yPos = Math.round(yPos - yPosIncrement);
+                }
+
+                // draw bottom tick marks
+                yPos = this.centerY + yPosIncrement;
+                unit = -1 * this.unitsPerTick;
+                while (yPos < this.canvas.height) {
+                    context.moveTo(this.centerX - this.tickSize / 2, yPos);
+                    context.lineTo(this.centerX + this.tickSize / 2, yPos);
+                    context.stroke();
+                    context.fillText(unit, this.centerX - this.tickSize / 2 - 3, yPos);
+                    unit -= this.unitsPerTick;
+                    yPos = Math.round(yPos + yPosIncrement);
+                }
+                context.restore();
+            };
+
+            //====================drawEquation========================
+            Graph.prototype.drawEquation = function(equation, color, thickness) {
+                var context = this.context;
+                context.save();
+                context.save();
+                this.transformContext();
+
+                context.beginPath();
+                context.moveTo(this.minX, equation(this.minX));
+
+                price = $("#price").val();
+                for (var x = this.minX + this.iteration; x <= price; x += this.iteration) {
+                    context.lineTo(x, equation(x));
+                }
+
+                context.restore();
+                context.lineJoin = 'round';
+                context.lineWidth = thickness;
+                context.strokeStyle = color;
+                context.stroke();
+                context.restore();
+            };
+            //======================Draw Verticle Line===========================
+            Graph.prototype.drawVerticleLine = function(equation, color, thickness) {
+                var context = this.context;
+                context.save();
+                context.save();
+                this.transformContext();
+
+                context.beginPath();
+                context.moveTo(equation(this.minY), this.minY);
+
+                price = $("#price").val();
+                for (var y = this.minY + this.iteration; y <= this.maxY; y += 30 * this.iteration) {
+                    context.lineTo(equation(y), y);
+                }
+
+                context.restore();
+                context.lineJoin = 'round';
+                context.lineWidth = thickness;
+                context.strokeStyle = color;
+                context.stroke();
+                context.restore();
+            };
+            //====================transformContext========================
+            Graph.prototype.transformContext = function() {
+                var context = this.context;
+
+                // move context to center of canvas
+                this.context.translate(this.centerX, this.centerY);
+
+                /*
+                 * stretch grid to fit the canvas window, and
+                 * invert the y scale so that that increments
+                 * as you move upwards
+                 */
+                context.scale(this.scaleX, -this.scaleY);
+            };
+            //====================transformContext========================
+            var myGraph = new Graph({
+                canvasId: 'myCanvas',
+                minX: 0,
+                minY: -150,
+                maxX: 100,
+                maxY: 150,
+                unitsPerTick: 10
+            });
+
+            price = $("#price").val();
+            myGraph.drawEquation(function(x) {
+                return (-1) * price + (1.5) * x;
+            }, 'green', 3);
+            //=================draw the straight line===================
+            myGraph.drawVerticleLine(function(y) {
+                return company_value;
+            }, 'blue', 1)
+
+
+            myGraph.drawDot(function(x) {
+                return (-1) * price + (1.5) * x;
+            }, 'red', 5);
+
+            record_result();
+        }
+    }); //end of button click
+
+    function disable() {
+        $(':input').prop('disabled', true);
+        //$('#NBC_reject').prop('disabled', true);
+    }
+
+
+    function record_result() {
+        $("#result_2").append("<hr>");
+        console.log(record);
+        //add ajax here
+
+    }
+    //===================Graph========================
+    function Graph(config) {
+        // user defined properties
+        this.canvas = document.getElementById(config.canvasId);
+        this.minX = config.minX;
+        this.minY = config.minY;
+        this.maxX = config.maxX;
+        this.maxY = config.maxY;
+        this.unitsPerTick = config.unitsPerTick;
+
+        // constants
+        this.axisColor = '#aaa';
+        this.font = '8pt Calibri';
+        this.tickSize = 20;
+
+        // relationships
+        this.context = this.canvas.getContext('2d');
+        this.rangeX = this.maxX - this.minX;
+        this.rangeY = this.maxY - this.minY;
+        this.unitX = this.canvas.width / this.rangeX;
+        this.unitY = this.canvas.height / this.rangeY;
+        this.centerY = Math.round(Math.abs(this.minY / this.rangeY) * this.canvas.height);
+        this.centerX = Math.round(Math.abs(this.minX / this.rangeX) * this.canvas.width);
+        this.iteration = (this.maxX - this.minX) / 1000;
+        this.scaleX = this.canvas.width / this.rangeX;
+        this.scaleY = this.canvas.height / this.rangeY;
+
+        // draw x and y axis
+        this.drawXAxis();
+        this.drawYAxis();
+    }
+
+    function record_result() {
+        console.log(record);
+        var form_data = new FormData();
+
+        for (var key in record) {
+            form_data.append(key, record[key]);
+        }
+        jQuery(document).ajaxSend(function(event, xhr, settings) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            function sameOrigin(url) {
+                // url could be relative or scheme relative or absolute
+                var host = document.location.host; // host + port
+                var protocol = document.location.protocol;
+                var sr_origin = '//' + host;
+                var origin = protocol + sr_origin;
+                // Allow absolute or scheme relative URLs to same origin
+                return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+                    (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+                    // or any other URL that isn't scheme relative or absolute i.e relative.
+                    !(/^(\/\/|http:|https:).*/.test(url));
+            }
+
+            function safeMethod(method) {
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        });
+        $.ajax({
+            url: 'http://140.112.107.55:8000/api/Company_Merger/',
+            data: form_data,
+            processData: false,
+            contentType: false,
+            type: 'POST'
+        }).done(function(data) {
+            console.log("add success")
+        });
+    }
+    // myGraph.drawEquation(function(x) {
+    //   return (1/4)*x + (1/4)*price;
+    // }, 'green', 3);
+    //===================End of Graph========================
+
+</script>
+
+</html>
