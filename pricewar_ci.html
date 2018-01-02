@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Price War</title>
+		<meta charset="utf-8">	
+		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/t/bs/jq-2.2.0,dt-1.10.11/datatables.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+		<meta name=標題 content="">
+		<meta name=關鍵字 content="">
+		<meta http-equiv=Content-Type content="text/html; charset=x-mac-chinesetrad">
+		<meta name=ProgId content=Word.Document>
+		<meta name=Generator content="Microsoft Word 15">
+		<meta name=Originator content="Microsoft Word 15">
+		<link rel=File-List href="價格戰詳細規則%20(1).fld/filelist.xml">
+		<link rel=themeData href="價格戰詳細規則%20(1).fld/themedata.thmx">
+
+
+	</head>
+	<style>
+        body{
+            background-color: whitesmoke;
+            font-size: 20px;
+        }
+        
+		#input1,#output1,#input2,#output2,#input3,#output3{
+			display:none;
+		}
+		.container{
+			margin-top:5%;
+		}
+		#result1,#result2,#result3{
+			 width:500px;
+		}
+		#WordSection1{
+			width: 75%;
+  			margin: 0 auto;
+		}
+    </style>
+    
+	<body>
+         <div class="container" style="width:100%;padding-top:50px;text-align: center; font-size: 48px;">
+        <h1>價格戰</h1>
+        </div>
+		<div class="container">
+			<div id=WordSection1 class="container" style="width:75%;padding:50px;text-align: left; font-size: 20px;">
+  				<p>這個遊戲叫「價格戰」，顧名思義，將使用價格來一決勝負。在這個遊戲中，所有廠商（也就是遊戲參與者）的成本都一樣，每個產品成本是100元，而所有人的產能都是無限大，能單獨供應整個市場的需求。市場內顧客總數為2000人，所有顧客的願付價格都一樣為200元。
+				    <br/>
+				    <br/>
+				    在這個版本中，每個廠商有一定的忠實客戶數量。所謂忠實客戶，是指只要該廠商價格不超越顧客的願付價格，那個不論其他廠商出價多低，忠實客戶一定會向該廠商購買。
+				</p>            
+				
+                    <div class="container text-center" style="line-height: 40px;margin-top:100px;">
+				    <p>情境一：
+				    <br/>
+				    市場內共有2家廠商，每家有500名忠實客戶。</p>
+				    <br/>
+                    <p>
+				    情境二：
+				    <br/>
+				    市場內共有4家廠商，每家有250名忠實客戶。</p>
+				    <br/>
+                    <p>
+ 				   情境三：
+ 				   <br/>
+				    市場內共有8家廠商，每家有125名忠實客戶。</p>
+                    </div>
+          
+                <div style="text-align: center;">
+				<button class='btn btn-primary' id='start' style="margin: 50px;">閱讀完畢，準備開始</button>
+                </div>      
+            </div>
+<!--            閱讀完畢-->
+            <div class="row" style="width:75%;">
+				<div id= input1 class="col-md-8" class="col-sm-7" style="align-content: center; line-height:40px;font-size: 20px;margin-bottom: 500px;">
+                    <h2>
+						情境一：
+					</h2>
+                    <br/>
+					<p>市場內共有2家廠商，每人有500名忠實客戶。</p>
+                    <br/>
+                     <p><label id="example-text-input" class="col-md-6">出價:</label></p>
+			  		<div>
+						<p><input class="form-control" style="width: 300px;height: 50px" type="number" placeholder="價格(1~200萬)" id="price1" min="1" max="200"></p>
+			  			
+                        <p><button class='btn btn-primary' id='confirm1'>確認</button></p>
+			  		</div>
+			  		<div style="margin-bottom: 20px;"></div>
+				</div>
+
+				<div id = output1 class="col-8">
+					<div id="result1"></div>
+					<button class='btn btn-primary' id='again1'> 再玩一次</button>
+					<button class='btn btn-primary' id='next1'>進入情境二</button>
+					<div style="margin-bottom: 50px;"></div>
+				</div>
+
+				<div id = input2 class="col-8">
+					<p></p>
+					<h2>
+						情境二：
+					</h2>
+					<p>市場內共有4家廠商，每人有250名忠實客戶。</p>
+					<p></p>
+					<label id="example-text-input" class="col-2 col-form-label">出價:</label>
+
+			  		<div class="col-3">
+						<input class="form-control" type="number" placeholder="價格(1~200萬)" id="price2" min="1" max="200">
+			  			<p></p>
+			  			<button class='btn btn-primary' id='confirm2'>確認</button>
+			  			<p></p>
+			  		</div>
+			  		<div style="margin-bottom: 20px;"></div>
+				</div>
+
+				<div id = output2 class="col-8">
+					<div id="result2"></div>
+					<button class='btn btn-primary' id='again2'> 再玩一次</button>
+					<button class='btn btn-primary' id='next2'>進入情境三</button>
+					<div style="margin-bottom: 50px;"></div>
+				</div>
+
+				
+
+				<div id = input3 class="col-8">
+					<p></p>
+					<p></p>
+					<p></p>
+					<p></p>
+					<h2>
+						情境三：
+					</h2>
+					<p>市場內共有8家廠商，每人有125名忠實客戶。</p>
+					<p></p>
+					<label id="example-text-input" class="col-2 col-form-label">出價:</label>
+
+			  		<div class="col-3">
+						<input class="form-control" type="number" placeholder="價格(1~200萬)" id="price3" min="1" max="200">
+			  			<p></p>
+			  			<button class='btn btn-primary' id='confirm3'>確認</button>
+			  			<p></p>
+			  		</div>
+			  		<div style="margin-bottom: 20px;"></div>
+				</div>
+
+				<div id = output3 class="col-8">
+					<div id="result3"></div>
+					<button class='btn btn-primary' id='again3'> 再玩一次</button>
+					<div style="margin-bottom: 50px;"></div>
+				</div>
+		</div>	
+		</div>	
+		</div>
+	</body>
+	<script>
+
+	//===============debug===================
+	//不能一次就顯示安個回合，要依序顯示
+	//要讓按鈕能按
+	//（解決）一次顯示一個回合，應該可以解決這個問題
+
+		var record ={};
+		var MAX_price=201;
+		var NumOfNonLoyalCus = 1000;
+		var Num_Of_company = 2;
+		var counter = 1;
+		//var access = {true,false,false}
+
+		//=======================================================
+		$(document).ready(function() {
+
+			PriceWar(Num_Of_company,counter);
+
+			if (counter>3){
+				record_result();
+			}
+		});
+		//=======================================================
+
+		function PriceWar(Num_Of_company,counter)
+		{
+			$( "#start").click(function() {
+				$( "#input1").css("display", "inline-block");
+				$('#price'+counter.toString()).prop('disabled', false);
+				$("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+			})
+
+			//===============click the button===============
+			//$( "#confirm"+counter.toString() ).click(function() {})
+
+
+			$( "#confirm1").click(function() {
+				counter = 1;
+				Num_Of_company = 2;
+				AfterConfirmClick(Num_Of_company,counter);
+				$('html, body').animate({scrollTop: $("#input1").offset().top});
+			})
+			$( "#confirm2").click(function() {
+				counter = 2;
+				Num_Of_company = 4;
+				AfterConfirmClick(Num_Of_company,counter);
+				$('html, body').animate({scrollTop: $("#input2").offset().top});
+			})
+			$( "#confirm3").click(function() {
+				counter = 3;
+				Num_Of_company = 8;
+				AfterConfirmClick(Num_Of_company,counter);
+				$('html, body').animate({scrollTop: $("#input3").offset().top});
+			})
+
+			$( "#next1").click(function() {
+				$("#next1").prop('disabled', true);
+				$( "#input2").css("display", "inline-block");
+				$("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+				//PriceWar(4,2)
+			})
+
+			$( "#next2" ).click(function() {
+				$("#next2").prop('disabled', true);
+				$( "#input3").css("display", "inline-block");
+				$("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+				//PriceWar(8,3)
+			})
+
+			$( "#again1" ).click(function() {
+				counter = 1
+				Num_Of_company = 2
+				$( "#result1" ).html("")
+				$( "#output1").css("display", "none");
+				$("#confirm1").prop('disabled', false);
+				$('#price1').val('');
+				$('#price1').prop('disabled', false);
+				$('html, body').animate({scrollTop: $("#input1").offset().top});
+			})
+			$( "#again2" ).click(function() {
+				counter = 2
+				Num_Of_company = 4
+				$( "#result2" ).html("")
+				$( "#output2").css("display", "none");
+				$("#confirm2").prop('disabled', false);
+				$('#price2').val('');
+				$('#price2').prop('disabled', false);
+				$('html, body').animate({scrollTop: $("#input2").offset().top});
+			})
+			$( "#again3" ).click(function() {
+				counter = 3
+				Num_Of_company = 8
+				$( "#result3" ).html("")
+				$( "#output3").css("display", "none");
+				$("#confirm3").prop('disabled', false);
+				$('#price3').val('');
+				$('#price3').prop('disabled', false);
+				$('html, body').animate({scrollTop: $("#input3").offset().top});
+			})
+
+		}
+
+		function AfterConfirmClick(Num_Of_company,counter)
+		{
+			//Get the input price
+				price = parseInt($("#price"+counter.toString()).val());
+				temp = $("#price"+counter.toString()).val();
+				
+				if(price<=0 || price>=MAX_price || temp == '')
+				{
+				alert("請輸入價格於1~200");
+				$('#price'+counter.toString()).val('');
+				} 
+				else
+				{
+					$("#confirm"+counter.toString()).prop('disabled', true);
+					$('#price'+counter.toString()).prop('disabled', true);
+					record['round'+counter.toString()+'_input_price'] = price;
+					var quantity = (1000/Num_Of_company);
+					var enemy_price = [];
+					var profit_of_enemy = [];
+					var quantity_of_enemy = [];
+					var Lowest_price_to_sell = 101;
+					var min_counter = 0;
+					
+					for (var i = 0; i < Num_Of_company-1; i+=1) {
+						var seed = Math.floor(Math.random() * (101));
+						temp_price = priceTranformer(seed,Num_Of_company,NumOfNonLoyalCus);
+						enemy_price[i] = Math.round(Number(temp_price));
+						record['round'+counter.toString()+'_input_price_of_enemy'+(i+1).toString()] = enemy_price[i];
+					}
+
+					//Get the min value
+					for (var i = 0; i < Num_Of_company-1; i+=1){
+						if (enemy_price[i]<Lowest_price_to_sell){
+							min = enemy_price[i]
+							min_counter = 1
+						}else{
+							if(enemy_price[i] == Lowest_price_to_sell){
+								min_counter += 1}
+						}
+					}
+					
+
+					
+
+					//===============calculate the profit===============
+					
+					if (price>Lowest_price_to_sell)
+					{
+						profit = (price-100)*(1000/Num_Of_company);
+						for (i=0;i<Num_Of_company-1;i++){
+							if (enemy_price[i]==Lowest_price_to_sell){
+								profit_of_enemy[i] = (enemy_price[i]-100)*(1000/Num_Of_company+1000/min_counter);
+								quantity_of_enemy[i]=1000/Num_Of_company+1000/min_counter;
+							}
+							else{
+								profit_of_enemy[i] = (enemy_price[i]-100)*(1000/Num_Of_company);
+								quantity_of_enemy[i]=1000/Num_Of_company;
+							}
+						}
+					}
+					else
+					{
+						if (price == Lowest_price_to_sell)
+						{
+							profit = (price-100)*(1000/Num_Of_company+1000/(min_counter+1));
+							quantity += (1000/(min_counter+1));
+							for (i=0;i<Num_Of_company-1;i++){
+								if (enemy_price[i]==Lowest_price_to_sell){
+									profit_of_enemy[i] = (enemy_price[i]-100)*(1000/Num_Of_company+(1000/(min_counter+1)));
+									quantity_of_enemy[i] = 1000/Num_Of_company+(1000/(min_counter+1));
+								}
+								else{
+									profit_of_enemy[i] = (enemy_price[i]-100)*(1000/Num_Of_company);
+									quantity_of_enemy[i]= 1000/Num_Of_company;
+								}
+							}
+						}
+
+						else
+						{
+							profit = (price-100)*(NumOfNonLoyalCus+1000/Num_Of_company);
+							quantity += NumOfNonLoyalCus
+							for (i=0;i<Num_Of_company-1;i++){
+								profit_of_enemy[i] = (enemy_price[i]-100)*(1000/Num_Of_company);
+								quantity_of_enemy[i] = 1000/Num_Of_company;
+							}
+
+						}
+					}
+					
+					record['round'+counter.toString()+'_quantity'] = quantity;
+					record['round'+counter.toString()+'_profit'] = profit;
+					for (i = 0; i<Num_Of_company-1;i++){
+						record['round'+counter.toString()+'_quantity_of_enemy '+(i+1).toString()] = quantity_of_enemy[i];
+						record['round'+counter.toString()+'_profit_of_enemy '+(i+1).toString()] = profit_of_enemy[i];
+					}
+					
+
+					//===============outp ut the result===============
+					if (profit>0){
+						$( "#result"+counter.toString() ).append( "恭喜你賣出了"+quantity+" 個商品，總共賺了 "+profit+" 元"+"<br>");
+					}
+					else
+					{
+						if(profit == 0)
+						{
+							$( "#result"+counter.toString() ).append( "你賣出了 "+quantity+" 個商品，不賺不賠"+"<br>");
+						}
+						else
+						{
+							profit = profit*(-1)
+							//$( "#result"+counter ).append( "你賣出了 "+quantity+" 個商品，你賠了 "+profit+" 元");
+							$( "#result"+counter.toString() ).append( "你賣出了 "+quantity+" 個商品，你賠了 "+profit+" 元"+"<br>");
+						}
+					}
+
+					for (i = 0; i<Num_Of_company-1;i++){
+						if (profit_of_enemy[i]>0){
+						$( "#result"+counter.toString() ).append("對手"+(i+1).toString()+"出價"+enemy_price[i]+"元，賣出了"+quantity_of_enemy[i]+"個商品，賺了"+profit_of_enemy[i]+"元"+"<br>");
+						}
+						else{
+							if (profit_of_enemy[i]==0){
+								$( "#result"+counter.toString() ).append("對手"+(i+1).toString()+"出價"+enemy_price[i]+"元，賣出了"+quantity_of_enemy[i]+"個商品，不賺不賠"+"<br>");
+							}
+							else{
+								profit_of_enemy[i] = profit_of_enemy[i]*(-1);
+								$( "#result"+counter.toString() ).append("對手"+(i+1).toString()+"出價"+enemy_price[i]+"元，賣出了"+quantity_of_enemy[i]+"個商品，陪了"+profit_of_enemy[i]+"元"+"<br>");
+							}
+						}
+					}
+					
+					$( "#output"+counter.toString()).css("display", "inline-block");
+				}
+		}
+
+		function priceTranformer(seed,Num_Of_company,NumOfNonLoyalCus){
+			seed = seed/100;
+			var temp1 = Num_Of_company * NumOfNonLoyalCus*Math.pow((1-seed),(Num_Of_company-1));
+			var temp2 = 2000-NumOfNonLoyalCus;
+			var price = (200*temp2+100*temp1)/(temp1+temp2)
+			return price
+		}
+
+		function disable(){
+			$(':input').prop('disabled', true);
+			//$('#NBC_reject').prop('disabled', true);
+		}
+
+		function record_result()
+		{
+			console.log(record);
+			var form_data = new FormData();
+
+			for ( var key in record ) {
+			    form_data.append(key, record[key]);
+			}
+			jQuery(document).ajaxSend(function(event, xhr, settings) {
+			    function getCookie(name) {
+			        var cookieValue = null;
+			        if (document.cookie && document.cookie != '') {
+			            var cookies = document.cookie.split(';');
+			            for (var i = 0; i < cookies.length; i++) {
+			                var cookie = jQuery.trim(cookies[i]);
+			                // Does this cookie string begin with the name we want?
+			                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+			                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+			                    break;
+			                }
+			            }
+			        }
+			        return cookieValue;
+			    }
+			    function sameOrigin(url) {
+			        // url could be relative or scheme relative or absolute
+			        var host = document.location.host; // host + port
+			        var protocol = document.location.protocol;
+			        var sr_origin = '//' + host;
+			        var origin = protocol + sr_origin;
+			        // Allow absolute or scheme relative URLs to same origin
+			        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+			            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+			            // or any other URL that isn't scheme relative or absolute i.e relative.
+			            !(/^(\/\/|http:|https:).*/.test(url));
+			    }
+			    function safeMethod(method) {
+			        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+			    }
+			 
+			    if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+			        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+			    }
+			});
+			$.ajax({
+			    url         : 'http://140.112.107.55:8000/api/Price_War/',
+			    data        : form_data,
+			    processData : false,
+			    contentType : false,
+			    type: 'POST'
+			}).done(function(data){
+			    console.log("add success")
+			});
+		}
+
+
+
+	</script>
+
+</html>
+
+
+
